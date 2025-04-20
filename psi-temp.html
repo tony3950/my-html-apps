@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="psi-temperature">
+    <title>temperature effect on psi</title>
+
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+
+    
+    
+</head>
+
+<body>
+    
+
+
+    <!-- Input boxes to count temperature difference in tyre and outside -->
+    <span>Tyre temp: </span>
+   <input type="number" id="celsiusTyre" placeholder="Tyre temp">
+   <br>
+   <span>Outside temp:</span>
+   <input type="number" id="celsiusOutside" placeholder = "Outside temp">
+   <br>
+
+   <!-- Button to trigger the function that counts the difference in temperature -->
+    
+   <div style = "padding: 10px;"><button id="tempDiffButton" style = "padding: 10px;">Calculate temp difference</button></div>
+
+   <!-- Input in the first box for temperature difference triggers the calculation of psi difference that is show in the PSI input box  -->
+    <span>Difference in temperature: </span>
+    <input type="number" id="celsiusDelta" placeholder="Celsius Delta">
+    <br>
+    <span>Difference in PSI: </span>
+    <input type="number" id="psiDelta" placeholder="PSI Delta">
+
+    <script>
+
+        /* This is the conversion formula 1 PSI ≈ 5.56°C  ///  1°C = 0.18 PSI */
+        
+        /* This listens to temperature difference input box and triggers the function to count the difference in psi and vice versa*/
+
+        document.getElementById("celsiusDelta").addEventListener("input", celsiusDeltaToPsi)
+        document.getElementById("psiDelta").addEventListener("input",psiDeltaToCelsius)
+
+        /* This button triggers the function to count the difference in temperature */
+
+        document.getElementById("tempDiffButton").addEventListener("click", temperatureDifference)
+
+        let celsiusDelta = 0;
+        let psiDelta = 0;
+        
+        let conversionValueCelsiusDeltaToPsi = 0;
+        let conversionValuePsiDeltaToCelsius = 0;
+        let celsiusTyre = 0;
+        let celsiusOutside = 0;
+        let celsiusDifference = 0;
+
+        /* This function counts the difference between tyre temperature and the outside temperature and the result is then put in the temperature difference box and then calls the function that counts the psi difference in different temperatures */
+
+        function temperatureDifference() {
+            celsiusTyre = parseInt(document.getElementById("celsiusTyre").value)
+            celsiusOutside = parseInt(document.getElementById("celsiusOutside").value)
+
+            celsiusDifference = (celsiusTyre - celsiusOutside) 
+
+            /* This if converts any negative number to positive number. This is necessary so that the difference between 10 and -15 degrees becomes 25 degrees, not -5  */
+
+            if (celsiusDifference < 0) {
+                celsiusDifference = celsiusDifference * -1
+            };
+
+            document.getElementById("celsiusDelta").value = celsiusDifference;
+
+            /* without this line of code the next conversion, that is conversion to find out the difference needed in psi, would not be trigger. Because the number gets put in the input field but do not trigger the event listener that is listening for manuel input from the user */
+
+            celsiusDeltaToPsi();
+           
+ 
+        };
+
+        /* This function takes the difference in temperature and count the the difference in PSI */
+
+        function celsiusDeltaToPsi() {
+
+            
+
+            celsiusDelta = parseFloat(document.getElementById("celsiusDelta").value)
+            conversionValueCelsiusDeltaToPsi = (celsiusDelta / 5.56)
+
+            document.getElementById("psiDelta").value = conversionValueCelsiusDeltaToPsi.toFixed(2)
+
+        };
+
+        /* This function takes the difference in psi and counts the difference in temperature */
+        function psiDeltaToCelsius() {
+
+            
+
+            psiDelta = parseFloat(document.getElementById("psiDelta").value)
+            conversionValuePsiDeltaToCelsius = (psiDelta * 5.56)
+            document.getElementById("celsiusDelta").value = conversionValuePsiDeltaToCelsius.toFixed(2)
+        };  
+    </script>
+</body>
+
+</html>
